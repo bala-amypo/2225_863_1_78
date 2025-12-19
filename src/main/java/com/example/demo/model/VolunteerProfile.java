@@ -1,15 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "volunteer_profiles",
-       uniqueConstraints = {
-           @UniqueConstraint(columnNames = "volunteerId"),
-           @UniqueConstraint(columnNames = "email"),
-           @UniqueConstraint(columnNames = "phone")
-       })
+@Table(name = "volunteer_profiles")
 public class VolunteerProfile {
 
     @Id
@@ -17,17 +11,20 @@ public class VolunteerProfile {
     private Long id;
 
     private String volunteerId;
-    private String fullName;
+    private String name;
     private String email;
     private String phone;
     private String availabilityStatus;
-    private LocalDateTime createdAt;
 
-    public VolunteerProfile() {}
+    public VolunteerProfile() {
+    }
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public VolunteerProfile(String volunteerId, String name, String email, String phone, String availabilityStatus) {
+        this.volunteerId = volunteerId;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.availabilityStatus = availabilityStatus;
     }
 
     public Long getId() {
@@ -46,18 +43,18 @@ public class VolunteerProfile {
         this.volunteerId = volunteerId;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+ 
+    public void setName(String name) {
+        this.name = name;
     }
-
+ 
     public String getEmail() {
         return email;
     }
-    
+ 
     public void setEmail(String email) {
         this.email = email;
     }
@@ -76,13 +73,5 @@ public class VolunteerProfile {
  
     public void setAvailabilityStatus(String availabilityStatus) {
         this.availabilityStatus = availabilityStatus;
-    }
- 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
- 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

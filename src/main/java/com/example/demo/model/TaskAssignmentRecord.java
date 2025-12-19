@@ -1,10 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "task_assignment_records")
+@Table(name = "task_assignments")
 public class TaskAssignmentRecord {
 
     @Id
@@ -13,26 +12,25 @@ public class TaskAssignmentRecord {
 
     private Long taskId;
     private Long volunteerId;
-    private String status;
-    private String notes;
-    private LocalDateTime assignedAt;
+    private String assignmentStatus;
 
-    public TaskAssignmentRecord() {}
+    public TaskAssignmentRecord() {
+    }
 
-    @PrePersist
-    public void onAssign() {
-        this.status = "ACTIVE";
-        this.assignedAt = LocalDateTime.now();
+    public TaskAssignmentRecord(Long taskId, Long volunteerId, String assignmentStatus) {
+        this.taskId = taskId;
+        this.volunteerId = volunteerId;
+        this.assignmentStatus = assignmentStatus;
     }
 
     public Long getId() {
         return id;
     }
- 
+
     public void setId(Long id) {
         this.id = id;
     }
- 
+
     public Long getTaskId() {
         return taskId;
     }
@@ -49,27 +47,11 @@ public class TaskAssignmentRecord {
         this.volunteerId = volunteerId;
     }
  
-    public String getStatus() {
-        return status;
+    public String getAssignmentStatus() {
+        return assignmentStatus;
     }
  
-    public void setStatus(String status) {
-        this.status = status;
-    }
- 
-    public String getNotes() {
-        return notes;
-    }
- 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
- 
-    public LocalDateTime getAssignedAt() {
-        return assignedAt;
-    }
- 
-    public void setAssignedAt(LocalDateTime assignedAt) {
-        this.assignedAt = assignedAt;
+    public void setAssignmentStatus(String assignmentStatus) {
+        this.assignmentStatus = assignmentStatus;
     }
 }
