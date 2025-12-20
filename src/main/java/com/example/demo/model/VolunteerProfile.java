@@ -25,7 +25,7 @@ public class VolunteerProfile {
     private LocalDateTime createdAt;
 
     @PrePersist
-    void created() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
     }
 

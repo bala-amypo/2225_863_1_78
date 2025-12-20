@@ -21,7 +21,7 @@ public class TaskRecord {
     private LocalDateTime createdAt;
 
     @PrePersist
-    void created() {
+    public void onCreate() {
         status = "OPEN";
         createdAt = LocalDateTime.now();
     }
@@ -36,9 +36,7 @@ public class TaskRecord {
     public void setTaskName(String taskName) { this.taskName = taskName; }
 
     public String getRequiredSkill() { return requiredSkill; }
-    public void setRequiredSkill(String requiredSkill) {
-        this.requiredSkill = requiredSkill;
-    }
+    public void setRequiredSkill(String requiredSkill) { this.requiredSkill = requiredSkill; }
 
     public String getRequiredSkillLevel() { return requiredSkillLevel; }
     public void setRequiredSkillLevel(String requiredSkillLevel) {
@@ -47,4 +45,3 @@ public class TaskRecord {
 
     public String getStatus() { return status; }
 }
- 
