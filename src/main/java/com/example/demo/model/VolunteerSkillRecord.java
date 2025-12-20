@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "volunteer_skill_records")
 public class VolunteerSkillRecord {
 
     @Id
@@ -13,41 +12,33 @@ public class VolunteerSkillRecord {
 
     private Long volunteerId;
     private String skillName;
-    private String skillLevel; // BEGINNER / INTERMEDIATE / EXPERT
-    private Boolean certified;
+    private String skillLevel;
+
     private LocalDateTime updatedAt;
 
-    public VolunteerSkillRecord() {}
-
-    public VolunteerSkillRecord(Long volunteerId, String skillName, String skillLevel, Boolean certified) {
-        this.volunteerId = volunteerId;
-        this.skillName = skillName;
-        this.skillLevel = skillLevel;
-        this.certified = certified;
-        this.updatedAt = LocalDateTime.now();
-    }
-
     @PrePersist
-    public void prePersist() {
-        this.updatedAt = LocalDateTime.now();
+    void updated() {
+        updatedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public Long getVolunteerId() { return volunteerId; }
-    public void setVolunteerId(Long volunteerId) { this.volunteerId = volunteerId; }
+    public void setVolunteerId(Long volunteerId) {
+        this.volunteerId = volunteerId;
+    }
 
     public String getSkillName() { return skillName; }
-    public void setSkillName(String skillName) { this.skillName = skillName; }
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
 
     public String getSkillLevel() { return skillLevel; }
-    public void setSkillLevel(String skillLevel) { this.skillLevel = skillLevel; }
-
-    public Boolean getCertified() { return certified; }
-    public void setCertified(Boolean certified) { this.certified = certified; }
+    public void setSkillLevel(String skillLevel) {
+        this.skillLevel = skillLevel;
+    }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
+ 
