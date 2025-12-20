@@ -17,6 +17,7 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
         this.repo = repo;
     }
 
+    @Override
     public VolunteerProfile create(VolunteerProfile profile) {
         if (repo.existsByEmail(profile.getEmail())) {
             throw new BadRequestException("Email already exists");
@@ -24,11 +25,13 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
         return repo.save(profile);
     }
 
+    @Override
     public VolunteerProfile get(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new BadRequestException("Volunteer not found"));
     }
 
+    @Override
     public List<VolunteerProfile> getAll() {
         return repo.findAll();
     }
