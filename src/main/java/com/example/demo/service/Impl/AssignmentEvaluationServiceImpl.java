@@ -5,9 +5,11 @@ import com.example.demo.model.AssignmentEvaluationRecord;
 import com.example.demo.repository.AssignmentEvaluationRecordRepository;
 import com.example.demo.repository.TaskAssignmentRecordRepository;
 import com.example.demo.service.AssignmentEvaluationService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AssignmentEvaluationServiceImpl
         implements AssignmentEvaluationService {
 
@@ -37,8 +39,7 @@ public class AssignmentEvaluationServiceImpl
     }
 
     @Override
-    public List<AssignmentEvaluationRecord> getEvaluationsByAssignment(
-            Long assignmentId) {
+    public List<AssignmentEvaluationRecord> getEvaluationsByAssignment(Long assignmentId) {
         return evaluationRepo.findByAssignmentId(assignmentId);
     }
 
