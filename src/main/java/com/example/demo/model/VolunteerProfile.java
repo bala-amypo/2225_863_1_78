@@ -1,29 +1,36 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "volunteer_profiles")
 public class VolunteerProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String volunteerId;
-    private String fullName;
-    private String email;
-    private String phone;
-    private String availabilityStatus;
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String name;
 
-    @PrePersist
-    void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String availabilityStatus; // AVAILABLE / UNAVAILABLE
+
+    // 🔹 No-arg constructor
+    public VolunteerProfile() {
     }
 
-    public VolunteerProfile() {}
+    // 🔹 Parameterized constructor
+    public VolunteerProfile(String name, String email, String availabilityStatus) {
+        this.name = name;
+        this.email = email;
+        this.availabilityStatus = availabilityStatus;
+    }
 
+    // 🔹 Getters & Setters
     public Long getId() {
         return id;
     }
@@ -32,20 +39,12 @@ public class VolunteerProfile {
         this.id = id;
     }
 
-    public String getVolunteerId() {
-        return volunteerId;
+    public String getName() {
+        return name;
     }
 
-    public void setVolunteerId(String volunteerId) {
-        this.volunteerId = volunteerId;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -56,27 +55,11 @@ public class VolunteerProfile {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getAvailabilityStatus() {
         return availabilityStatus;
     }
 
     public void setAvailabilityStatus(String availabilityStatus) {
         this.availabilityStatus = availabilityStatus;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
