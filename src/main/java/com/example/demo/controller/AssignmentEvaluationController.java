@@ -15,7 +15,7 @@ public class AssignmentEvaluationController {
 
     private final AssignmentEvaluationService evaluationService;
 
-    // ✅ Constructor injection
+    
     public AssignmentEvaluationController(
             AssignmentEvaluationService evaluationService) {
         this.evaluationService = evaluationService;

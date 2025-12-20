@@ -14,7 +14,7 @@ public class AssignmentEvaluationRecord {
     @Column(nullable = false)
     private Long assignmentId;
 
-    private Integer rating; // 1 - 5
+    private Integer rating; 
 
     private String feedback;
 
@@ -33,7 +33,7 @@ public class AssignmentEvaluationRecord {
         this.evaluatedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
+    
     public Long getId() { return id; }
 
     public Long getAssignmentId() { return assignmentId; }
