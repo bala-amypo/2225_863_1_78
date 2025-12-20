@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.TaskRecord;
-import com.example.demo.service.TaskAssignmentService;
 import com.example.demo.service.TaskRecordService;
 
 @RestController
@@ -13,12 +12,9 @@ import com.example.demo.service.TaskRecordService;
 public class TaskRecordController {
 
     private final TaskRecordService taskRecordService;
-    private final TaskAssignmentService taskAssignmentService;
 
-    public TaskRecordController(TaskRecordService taskRecordService,
-                                TaskAssignmentService taskAssignmentService) {
+    public TaskRecordController(TaskRecordService taskRecordService) {
         this.taskRecordService = taskRecordService;
-        this.taskAssignmentService = taskAssignmentService;
     }
 
     @PostMapping
@@ -27,8 +23,8 @@ public class TaskRecordController {
         return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{taskId}/assign")
-    public ResponseEntity<?> assignTask(@PathVariable Long taskId) {
-        return ResponseEntity.ok(taskAssignmentService.assignTask(taskId));
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskRecord> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(taskRecordService.getTaskById(id));
     }
 }

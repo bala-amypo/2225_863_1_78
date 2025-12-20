@@ -28,7 +28,7 @@ public class TaskRecordServiceImpl implements TaskRecordService {
             throw new BadRequestException("Required skill level must not be null");
         }
 
-        // Rule: New task must start with OPEN
+        // PDF RULE
         task.setStatus("OPEN");
 
         return taskRecordRepository.save(task);
