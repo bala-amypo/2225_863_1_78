@@ -4,56 +4,40 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "volunteer_profile",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "volunteerId"),
-        @UniqueConstraint(columnNames = "email"),
-        @UniqueConstraint(columnNames = "phone")
-    }
-)
+@Table(name = "volunteer_profiles", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "volunteerId"),
+    @UniqueConstraint(columnNames = "email"),
+    @UniqueConstraint(columnNames = "phone")
+})
 public class VolunteerProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String volunteerId;
-
     private String fullName;
-
-    @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String phone;
-
-    @Column(nullable = false)
     private String availabilityStatus; // AVAILABLE / BUSY / INACTIVE
-
     private LocalDateTime createdAt;
 
-    // Default constructor
-    public VolunteerProfile() {}
+    public VolunteerProfile() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-    // Parameterized constructor
-    public VolunteerProfile(String volunteerId, String fullName, String email,
-                            String phone, String availabilityStatus) {
+    public VolunteerProfile(String volunteerId, String fullName, String email, String phone, String availabilityStatus) {
         this.volunteerId = volunteerId;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.availabilityStatus = availabilityStatus;
-    }
-
-    @PrePersist
-    public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
     // Getters & Setters
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getVolunteerId() { return volunteerId; }
     public void setVolunteerId(String volunteerId) { this.volunteerId = volunteerId; }
@@ -68,9 +52,8 @@ public class VolunteerProfile {
     public void setPhone(String phone) { this.phone = phone; }
 
     public String getAvailabilityStatus() { return availabilityStatus; }
-    public void setAvailabilityStatus(String availabilityStatus) {
-        this.availabilityStatus = availabilityStatus;
-    }
+    public void setAvailabilityStatus(String availabilityStatus) { this.availabilityStatus = availabilityStatus; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
