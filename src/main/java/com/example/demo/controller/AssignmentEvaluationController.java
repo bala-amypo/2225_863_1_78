@@ -12,12 +12,13 @@ public class AssignmentEvaluationController {
 
     private final AssignmentEvaluationService service;
 
-    public AssignmentEvaluationController(AssignmentEvaluationService service) {
+    public AssignmentEvaluationController(
+            AssignmentEvaluationService service) {
         this.service = service;
     }
 
     @PostMapping
-    public AssignmentEvaluationRecord submitEvaluation(
+    public AssignmentEvaluationRecord submit(
             @RequestBody AssignmentEvaluationRecord evaluation) {
         return service.evaluateAssignment(evaluation);
     }

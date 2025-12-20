@@ -1,16 +1,13 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.AssignmentEvaluationRecord;
-import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.repository.AssignmentEvaluationRecordRepository;
 import com.example.demo.repository.TaskAssignmentRecordRepository;
 import com.example.demo.service.AssignmentEvaluationService;
 
-@Service
+import java.util.List;
+
 public class AssignmentEvaluationServiceImpl
         implements AssignmentEvaluationService {
 
@@ -28,16 +25,25 @@ public class AssignmentEvaluationServiceImpl
     public AssignmentEvaluationRecord evaluateAssignment(
             AssignmentEvaluationRecord evaluation) {
 
-        TaskAssignmentRecord assignment =
-                assignmentRepo.findById(evaluation.getAssignmentId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Assignment not found"));
-
-        if (!"COMPLETED".equals(assignment.getStatus())) {
-            throw new BadRequestException(
-                    "Evaluation allowed only for COMPLETED assignment");
+        if (evaluation.getAssignmentId() == null) {
+            throw new BadRequestException("Assignment ID required");
         }
 
+        assignmentRepo.findById(evaluation.getAssignmentId())
+                .orElseThrow(() ->
+                        new BadRequestException("Invalid assignment"));
+
         return evaluationRepo.save(evaluation);
+    }
+
+    @Override
+    public List<AssignmentEvaluationRecord> getEvaluationsByAssignment(
+            Long assignmentId) {
+        return evaluationRepo.findByAssignmentId(assignmentId);
+    }
+
+    @Override
+    public List<AssignmentEvaluationRecord> getAllEvaluations() {
+        return evaluationRepo.findAll();
     }
 }
