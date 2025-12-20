@@ -1,28 +1,47 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.TaskAssignment;
-import com.example.demo.service.TaskAssignmentService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
 
-import java.util.List;
+@Entity
+public class TaskAssignment {
 
-@RestController
-@RequestMapping("/task-assignments")
-public class TaskAssignmentController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final TaskAssignmentService service;
+    private String taskName;
+    private String status;
 
-    public TaskAssignmentController(TaskAssignmentService service) {
-        this.service = service;
+    public TaskAssignment() {
     }
 
-    @PostMapping
-    public TaskAssignment save(@RequestBody TaskAssignment task) {
-        return service.save(task);
+    public TaskAssignment(Long id, String taskName, String status) {
+        this.id = id;
+        this.taskName = taskName;
+        this.status = status;
     }
 
-    @GetMapping
-    public List<TaskAssignment> getAll() {
-        return service.getAll();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

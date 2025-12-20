@@ -1,28 +1,47 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.VolunteerSkill;
-import com.example.demo.service.VolunteerSkillService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
 
-import java.util.List;
+@Entity
+public class VolunteerSkill {
 
-@RestController
-@RequestMapping("/volunteer-skills")
-public class VolunteerSkillController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final VolunteerSkillService service;
+    private String skillName;
+    private String level;
 
-    public VolunteerSkillController(VolunteerSkillService service) {
-        this.service = service;
+    public VolunteerSkill() {
     }
 
-    @PostMapping
-    public VolunteerSkill save(@RequestBody VolunteerSkill skill) {
-        return service.save(skill);
+    public VolunteerSkill(Long id, String skillName, String level) {
+        this.id = id;
+        this.skillName = skillName;
+        this.level = level;
     }
 
-    @GetMapping
-    public List<VolunteerSkill> getAll() {
-        return service.getAll();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

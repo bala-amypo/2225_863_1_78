@@ -1,28 +1,47 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.AssignmentEvaluation;
-import com.example.demo.service.AssignmentEvaluationService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
 
-import java.util.List;
+@Entity
+public class AssignmentEvaluation {
 
-@RestController
-@RequestMapping("/assignment-evaluations")
-public class AssignmentEvaluationController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final AssignmentEvaluationService service;
+    private String remarks;
+    private int score;
 
-    public AssignmentEvaluationController(AssignmentEvaluationService service) {
-        this.service = service;
+    public AssignmentEvaluation() {
     }
 
-    @PostMapping
-    public AssignmentEvaluation save(@RequestBody AssignmentEvaluation evaluation) {
-        return service.save(evaluation);
+    public AssignmentEvaluation(Long id, String remarks, int score) {
+        this.id = id;
+        this.remarks = remarks;
+        this.score = score;
     }
 
-    @GetMapping
-    public List<AssignmentEvaluation> getAll() {
-        return service.getAll();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
