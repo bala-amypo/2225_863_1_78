@@ -10,7 +10,7 @@ import com.example.demo.service.TaskRecordService;
 
 @RestController
 @RequestMapping("/tasks")
-public class TaskController {
+public class TaskRecordController {
 
     private final TaskRecordService taskRecordService;
     private final TaskAssignmentService taskAssignmentService;
