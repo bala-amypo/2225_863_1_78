@@ -15,8 +15,8 @@ public class TaskRecordController {
     private final TaskRecordService taskRecordService;
     private final TaskAssignmentService taskAssignmentService;
 
-    public TaskController(TaskRecordService taskRecordService,
-                          TaskAssignmentService taskAssignmentService) {
+    public TaskRecordController(TaskRecordService taskRecordService,
+                                TaskAssignmentService taskAssignmentService) {
         this.taskRecordService = taskRecordService;
         this.taskAssignmentService = taskAssignmentService;
     }
