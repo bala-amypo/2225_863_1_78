@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.repository.TaskAssignmentRecordRepository;
 import com.example.demo.service.TaskAssignmentService;
+import com.example.demo.exception.BadRequestException;
 
 @Service
 public class TaskAssignmentServiceImpl implements TaskAssignmentService {
@@ -16,19 +17,27 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         this.repo = repo;
     }
 
+    // CREATE assignment (CRUD level – simple)
     @Override
     public TaskAssignmentRecord assign(Long taskId) {
+
         TaskAssignmentRecord record = new TaskAssignmentRecord();
         record.setTaskId(taskId);
-        record.setVolunteerId(1L); // dummy volunteer for CRUD level
+        record.setVolunteerId(1L); // dummy volunteer for CRUD syllabus
+
         return repo.save(record);
     }
 
+    // ✅ UPDATE assignment status (CORRECT)
     @Override
     public TaskAssignmentRecord updateStatus(Long id, String status) {
-        TaskAssignmentRecord record = repo.findById(id).orElseThrow();
-        record.setStatus(status);
-        return repo.save(record);
+
+        TaskAssignmentRecord existing = repo.findById(id)
+                .orElseThrow(() -> new BadRequestException("Assignment not found"));
+
+        existing.setStatus(status);
+
+        return repo.save(existing); // UPDATE
     }
 
     @Override
