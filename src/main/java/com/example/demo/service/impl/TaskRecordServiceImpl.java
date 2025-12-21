@@ -17,13 +17,12 @@ public class TaskRecordServiceImpl implements TaskRecordService {
         this.repo = repo;
     }
 
-    // CREATE
     @Override
     public TaskRecord create(TaskRecord task) {
         return repo.save(task);
     }
 
-    // ✅ UPDATE (CORRECT)
+    // ✅ UPDATE CORE FIELDS (NOT taskCode, NOT status)
     @Override
     public TaskRecord update(Long id, TaskRecord updated) {
 
@@ -34,7 +33,19 @@ public class TaskRecordServiceImpl implements TaskRecordService {
         existing.setRequiredSkill(updated.getRequiredSkill());
         existing.setRequiredSkillLevel(updated.getRequiredSkillLevel());
 
-        return repo.save(existing); // UPDATE
+        return repo.save(existing);
+    }
+
+    // ✅ UPDATE STATUS SEPARATELY
+    @Override
+    public TaskRecord updateStatus(Long id, String status) {
+
+        TaskRecord task = repo.findById(id)
+                .orElseThrow(() -> new BadRequestException("Task not found"));
+
+        task.setStatus(status);
+
+        return repo.save(task);
     }
 
     @Override

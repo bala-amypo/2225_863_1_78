@@ -9,6 +9,8 @@ public interface TaskRecordService {
 
     TaskRecord update(Long id, TaskRecord task);
 
+    TaskRecord updateStatus(Long id, String status);
+
     TaskRecord get(Long id);
 
     List<TaskRecord> getOpenTasks();

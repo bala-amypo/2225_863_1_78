@@ -16,13 +16,13 @@ public class TaskRecordController {
         this.service = service;
     }
 
-    // POST /api/tasks - Create task
+    // POST /api/tasks
     @PostMapping
     public TaskRecord create(@RequestBody TaskRecord task) {
         return service.create(task);
     }
 
-    // ✅ PUT /api/tasks/{id} - Update task
+    // ✅ PUT /api/tasks/{id}
     @PutMapping("/{id}")
     public TaskRecord update(
             @PathVariable Long id,
@@ -31,19 +31,28 @@ public class TaskRecordController {
         return service.update(id, task);
     }
 
-    // GET /api/tasks/{id} - Get task
+    // ✅ PUT /api/tasks/{id}/status
+    @PutMapping("/{id}/status")
+    public TaskRecord updateStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+
+        return service.updateStatus(id, status);
+    }
+
+    // GET /api/tasks/{id}
     @GetMapping("/{id}")
-    public TaskRecord getById(@PathVariable Long id) {
+    public TaskRecord get(@PathVariable Long id) {
         return service.get(id);
     }
 
-    // GET /api/tasks/open - Get open tasks
+    // GET /api/tasks/open
     @GetMapping("/open")
     public List<TaskRecord> openTasks() {
         return service.getOpenTasks();
     }
 
-    // GET /api/tasks - List all
+    // GET /api/tasks
     @GetMapping
     public List<TaskRecord> getAll() {
         return service.getAll();
