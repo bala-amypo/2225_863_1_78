@@ -16,21 +16,21 @@ public class AssignmentEvaluationController {
         this.repo = repo;
     }
 
-    // POST / - Submit evaluation
+    
     @PostMapping
     public AssignmentEvaluationRecord submit(
             @RequestBody AssignmentEvaluationRecord eval) {
         return repo.save(eval);
     }
 
-    // GET /assignment/{assignmentId}
+   
     @GetMapping("/assignment/{assignmentId}")
     public List<AssignmentEvaluationRecord> byAssignment(
             @PathVariable Long assignmentId) {
         return repo.findByAssignmentId(assignmentId);
     }
 
-    // GET / - List all
+   
     @GetMapping
     public List<AssignmentEvaluationRecord> getAll() {
         return repo.findAll();

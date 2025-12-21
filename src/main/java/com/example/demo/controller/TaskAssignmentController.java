@@ -16,13 +16,13 @@ public class TaskAssignmentController {
         this.service = service;
     }
 
-    // POST /api/assignments/assign/{taskId}
+    
     @PostMapping("/assign/{taskId}")
     public TaskAssignmentRecord assign(@PathVariable Long taskId) {
         return service.assign(taskId);
     }
 
-    // ✅ PUT /api/assignments/{id}/status
+   
     @PutMapping("/{id}/status")
     public TaskAssignmentRecord updateStatus(
             @PathVariable Long id,
@@ -31,21 +31,21 @@ public class TaskAssignmentController {
         return service.updateStatus(id, status);
     }
 
-    // GET /api/assignments/volunteer/{volunteerId}
+    
     @GetMapping("/volunteer/{volunteerId}")
     public List<TaskAssignmentRecord> byVolunteer(
             @PathVariable Long volunteerId) {
         return service.getByVolunteer(volunteerId);
     }
 
-    // GET /api/assignments/task/{taskId}
+    
     @GetMapping("/task/{taskId}")
     public List<TaskAssignmentRecord> byTask(
             @PathVariable Long taskId) {
         return service.getByTask(taskId);
     }
 
-    // GET /api/assignments
+   
     @GetMapping
     public List<TaskAssignmentRecord> getAll() {
         return service.getAll();
