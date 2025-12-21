@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.TaskRecord;
 import com.example.demo.service.TaskRecordService;
@@ -16,45 +17,36 @@ public class TaskRecordController {
         this.service = service;
     }
 
-    // POST /api/tasks
+    // POST - create task
     @PostMapping
     public TaskRecord create(@RequestBody TaskRecord task) {
         return service.create(task);
     }
 
-    // ✅ PUT /api/tasks/{id}
-    @PutMapping("/{id}")
-    public TaskRecord update(
-            @PathVariable Long id,
-            @RequestBody TaskRecord task) {
-
-        return service.update(id, task);
-    }
-
-    // ✅ PUT /api/tasks/{id}/status
-    @PutMapping("/{id}/status")
-    public TaskRecord updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status) {
-
-        return service.updateStatus(id, status);
-    }
-
-    // GET /api/tasks/{id}
+    // GET by id
     @GetMapping("/{id}")
     public TaskRecord get(@PathVariable Long id) {
         return service.get(id);
     }
 
-    // GET /api/tasks/open
-    @GetMapping("/open")
-    public List<TaskRecord> openTasks() {
-        return service.getOpenTasks();
-    }
-
-    // GET /api/tasks
+    // GET all
     @GetMapping
     public List<TaskRecord> getAll() {
         return service.getAll();
+    }
+
+    // GET open tasks
+    @GetMapping("/open")
+    public List<TaskRecord> getOpen() {
+        return service.getOpenTasks();
+    }
+
+    // ✅ ONLY ONE PUT — updates ALL fields
+    @PutMapping("/{id}")
+    public TaskRecord update(
+            @PathVariable Long id,
+            @RequestBody TaskRecord updatedTask) {
+
+        return service.update(id, updatedTask);
     }
 }
