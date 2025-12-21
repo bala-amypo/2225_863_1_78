@@ -17,18 +17,18 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
         this.repo = repo;
     }
 
-    // CREATE assignment (CRUD level – simple)
+    
     @Override
     public TaskAssignmentRecord assign(Long taskId) {
 
         TaskAssignmentRecord record = new TaskAssignmentRecord();
         record.setTaskId(taskId);
-        record.setVolunteerId(1L); // dummy volunteer for CRUD syllabus
+        record.setVolunteerId(1L); 
 
         return repo.save(record);
     }
 
-    // ✅ UPDATE assignment status (CORRECT)
+    
     @Override
     public TaskAssignmentRecord updateStatus(Long id, String status) {
 

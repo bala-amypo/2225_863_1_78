@@ -17,7 +17,7 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
         this.repo = repo;
     }
 
-    // CREATE (ONLY FOR NEW RECORD)
+    
     @Override
     public VolunteerProfile create(VolunteerProfile profile) {
 
@@ -28,7 +28,7 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
         return repo.save(profile);
     }
 
-    // ✅ UPDATE (SEPARATE METHOD)
+    
     @Override
     public VolunteerProfile updateAvailability(Long id, String status) {
 
@@ -37,7 +37,7 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
 
         existing.setAvailabilityStatus(status);
 
-        return repo.save(existing); // UPDATE
+        return repo.save(existing); 
     }
 
     @Override

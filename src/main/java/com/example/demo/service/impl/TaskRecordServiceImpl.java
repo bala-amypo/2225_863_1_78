@@ -39,7 +39,7 @@ public class TaskRecordServiceImpl implements TaskRecordService {
         return repo.findByStatus("OPEN");
     }
 
-    // ✅ FULL UPDATE LOGIC
+    
     @Override
     public TaskRecord update(Long id, TaskRecord updatedTask) {
 
