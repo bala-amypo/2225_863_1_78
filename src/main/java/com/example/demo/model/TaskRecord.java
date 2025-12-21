@@ -10,7 +10,7 @@ public class TaskRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, updatable = false)
     private String taskCode;
 
     private String taskName;
@@ -22,26 +22,64 @@ public class TaskRecord {
 
     @PrePersist
     public void onCreate() {
-        status = "OPEN";
+        if (status == null) {
+            status = "OPEN";
+        }
         createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // -------- GETTERS & SETTERS --------
 
-    public String getTaskCode() { return taskCode; }
-    public void setTaskCode(String taskCode) { this.taskCode = taskCode; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTaskName() { return taskName; }
-    public void setTaskName(String taskName) { this.taskName = taskName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getRequiredSkill() { return requiredSkill; }
-    public void setRequiredSkill(String requiredSkill) { this.requiredSkill = requiredSkill; }
+    public String getTaskCode() {
+        return taskCode;
+    }
 
-    public String getRequiredSkillLevel() { return requiredSkillLevel; }
+    public void setTaskCode(String taskCode) {
+        this.taskCode = taskCode;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getRequiredSkill() {
+        return requiredSkill;
+    }
+
+    public void setRequiredSkill(String requiredSkill) {
+        this.requiredSkill = requiredSkill;
+    }
+
+    public String getRequiredSkillLevel() {
+        return requiredSkillLevel;
+    }
+
     public void setRequiredSkillLevel(String requiredSkillLevel) {
         this.requiredSkillLevel = requiredSkillLevel;
     }
 
-    public String getStatus() { return status; }
+    public String getStatus() {
+        return status;
+    }
+
+    // ✅ THIS METHOD WAS MISSING
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
