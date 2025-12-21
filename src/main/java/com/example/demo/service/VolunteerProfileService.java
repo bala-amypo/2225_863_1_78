@@ -7,6 +7,8 @@ public interface VolunteerProfileService {
 
     VolunteerProfile create(VolunteerProfile profile);
 
+    VolunteerProfile updateAvailability(Long id, String status);
+
     VolunteerProfile get(Long id);
 
     List<VolunteerProfile> getAll();
