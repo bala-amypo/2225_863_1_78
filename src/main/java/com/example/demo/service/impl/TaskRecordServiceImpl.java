@@ -17,21 +17,24 @@ public class TaskRecordServiceImpl implements TaskRecordService {
         this.repo = repo;
     }
 
+    // CREATE
     @Override
     public TaskRecord create(TaskRecord task) {
         return repo.save(task);
     }
 
+    // ✅ UPDATE (CORRECT)
     @Override
     public TaskRecord update(Long id, TaskRecord updated) {
-        TaskRecord task = repo.findById(id)
+
+        TaskRecord existing = repo.findById(id)
                 .orElseThrow(() -> new BadRequestException("Task not found"));
 
-        task.setTaskName(updated.getTaskName());
-        task.setRequiredSkill(updated.getRequiredSkill());
-        task.setRequiredSkillLevel(updated.getRequiredSkillLevel());
+        existing.setTaskName(updated.getTaskName());
+        existing.setRequiredSkill(updated.getRequiredSkill());
+        existing.setRequiredSkillLevel(updated.getRequiredSkillLevel());
 
-        return repo.save(task);
+        return repo.save(existing); // UPDATE
     }
 
     @Override

@@ -4,49 +4,48 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import com.example.demo.model.TaskRecord;
-import com.example.demo.repository.TaskRecordRepository;
+import com.example.demo.service.TaskRecordService;
 
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskRecordController {
 
-    private final TaskRecordRepository repo;
+    private final TaskRecordService service;
 
-    public TaskRecordController(TaskRecordRepository repo) {
-        this.repo = repo;
+    public TaskRecordController(TaskRecordService service) {
+        this.service = service;
     }
 
-    // POST / - Create task
+    // POST /api/tasks - Create task
     @PostMapping
     public TaskRecord create(@RequestBody TaskRecord task) {
-        return repo.save(task);
+        return service.create(task);
     }
 
-    // PUT /{id} - Update task
+    // ✅ PUT /api/tasks/{id} - Update task
     @PutMapping("/{id}")
-    public TaskRecord update(@PathVariable Long id, @RequestBody TaskRecord updated) {
-        TaskRecord t = repo.findById(id).orElseThrow();
-        t.setTaskName(updated.getTaskName());
-        t.setRequiredSkill(updated.getRequiredSkill());
-        t.setRequiredSkillLevel(updated.getRequiredSkillLevel());
-        return repo.save(t);
+    public TaskRecord update(
+            @PathVariable Long id,
+            @RequestBody TaskRecord task) {
+
+        return service.update(id, task);
     }
 
-    // GET /open - List open tasks
-    @GetMapping("/open")
-    public List<TaskRecord> openTasks() {
-        return repo.findByStatus("OPEN");
-    }
-
-    // GET /{id} - Get task
+    // GET /api/tasks/{id} - Get task
     @GetMapping("/{id}")
     public TaskRecord getById(@PathVariable Long id) {
-        return repo.findById(id).orElse(null);
+        return service.get(id);
     }
 
-    // GET / - List all
+    // GET /api/tasks/open - Get open tasks
+    @GetMapping("/open")
+    public List<TaskRecord> openTasks() {
+        return service.getOpenTasks();
+    }
+
+    // GET /api/tasks - List all
     @GetMapping
     public List<TaskRecord> getAll() {
-        return repo.findAll();
+        return service.getAll();
     }
 }
