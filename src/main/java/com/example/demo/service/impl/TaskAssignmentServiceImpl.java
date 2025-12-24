@@ -3,11 +3,12 @@ package com.example.demo.service.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.service.TaskAssignmentService;
 import com.example.demo.repository.*;
 import com.example.demo.model.TaskAssignmentRecord;
 
 @Service
-public class TaskAssignmentServiceImpl {
+public class TaskAssignmentServiceImpl implements TaskAssignmentService {
 
     private final TaskAssignmentRecordRepository assignmentRepo;
     private final TaskRecordRepository taskRepo;
@@ -26,11 +27,13 @@ public class TaskAssignmentServiceImpl {
         this.skillRepo = skillRepo;
     }
 
-    public List<TaskAssignmentRecord> getAssignmentsByVolunteer(Long id) {
-        return assignmentRepo.findAll();
+    @Override
+    public void assignTask(Long taskId) {
+        // dummy logic for test
     }
 
-    public void assignTask(Long taskId) {
-        // test dummy
+    @Override
+    public List<TaskAssignmentRecord> getAssignmentsByVolunteer(Long volunteerId) {
+        return assignmentRepo.findAll();
     }
 }
