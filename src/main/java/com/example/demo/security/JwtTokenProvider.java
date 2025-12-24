@@ -1,10 +1,13 @@
+package com.example.demo.security;
+
+import org.springframework.stereotype.Component;
+import org.springframework.security.core.Authentication;
+
 @Component
 public class JwtTokenProvider {
 
-    private final String secret = "secret";
-
-    public String generateToken(Authentication auth, Long id, String role) {
-        return id + ":" + role;
+    public String generateToken(Authentication auth, Long userId, String role) {
+        return userId + ":" + role;
     }
 
     public String getUsernameFromToken(String token) {

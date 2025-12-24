@@ -1,3 +1,9 @@
+package com.example.demo.security;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.model.User;
+
 @Service
 public class CustomUserDetailsService {
 

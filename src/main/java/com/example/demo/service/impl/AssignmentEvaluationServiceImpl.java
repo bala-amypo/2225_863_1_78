@@ -1,36 +1,18 @@
-package com.example.demo.service.impl;
-
-import org.springframework.stereotype.Service;
-import java.util.List;
-
-import com.example.demo.model.AssignmentEvaluationRecord;
-import com.example.demo.repository.AssignmentEvaluationRecordRepository;
-import com.example.demo.service.AssignmentEvaluationService;
-
 @Service
-public class AssignmentEvaluationServiceImpl
-        implements AssignmentEvaluationService {
+public class AssignmentEvaluationServiceImpl {
 
     private final AssignmentEvaluationRecordRepository repo;
+    private final TaskAssignmentRecordRepository taskAssignmentRepo;
 
     public AssignmentEvaluationServiceImpl(
-            AssignmentEvaluationRecordRepository repo) {
+            AssignmentEvaluationRecordRepository repo,
+            TaskAssignmentRecordRepository taskAssignmentRepo) {
+
         this.repo = repo;
+        this.taskAssignmentRepo = taskAssignmentRepo;
     }
 
-    @Override
-    public AssignmentEvaluationRecord submit(
-            AssignmentEvaluationRecord evaluation) {
-        return repo.save(evaluation);
-    }
-
-    @Override
-    public List<AssignmentEvaluationRecord> getByAssignment(Long assignmentId) {
-        return repo.findByAssignmentId(assignmentId);
-    }
-
-    @Override
-    public List<AssignmentEvaluationRecord> getAll() {
-        return repo.findAll();
+    public AssignmentEvaluationRecord evaluateAssignment(AssignmentEvaluationRecord r) {
+        return repo.save(r);
     }
 }

@@ -1,3 +1,11 @@
+package com.example.demo.service.impl;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.repository.*;
+import com.example.demo.model.TaskAssignmentRecord;
+
 @Service
 public class TaskAssignmentServiceImpl {
 
@@ -23,6 +31,6 @@ public class TaskAssignmentServiceImpl {
     }
 
     public void assignTask(Long taskId) {
-        // dummy logic for test
+        // test dummy
     }
 }
