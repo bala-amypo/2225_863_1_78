@@ -1,28 +1,18 @@
 package com.example.demo.security;
 
 import org.springframework.stereotype.Service;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.User;
 
 @Service
 public class CustomUserDetailsService {
 
-    private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public User registerUser(String name, String email, String password, String role) {
-        User u = new User();
-        u.setFullName(name);
-        u.setEmail(email);
-        u.setPassword(password);
-        u.setRole(role);
-        return userRepository.save(u);
-    }
-
-    public boolean existsByEmail(String email) {
-        return userRepository.findByEmail(email) != null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return User.builder()
+                .username(username)
+                .password("dummy")
+                .roles("USER")
+                .build();
     }
 }
