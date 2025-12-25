@@ -1,15 +1,16 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.*;
-import java.util.*;
+import com.example.demo.model.VolunteerProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-public interface VolunteerProfileRepository {
-    boolean existsByVolunteerId(String id);
+@Repository
+public interface VolunteerProfileRepository extends JpaRepository<VolunteerProfile, Long> {
+    List<VolunteerProfile> findByAvailabilityStatus(String status);
+    boolean existsByVolunteerId(String volunteerId);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
-    Optional<VolunteerProfile> findById(Long id);
-    Optional<VolunteerProfile> findByVolunteerId(String id);
-    List<VolunteerProfile> findByAvailabilityStatus(String status);
-    List<VolunteerProfile> findAll();
-    VolunteerProfile save(VolunteerProfile v);
+    Optional<VolunteerProfile> findByVolunteerId(String volunteerId);
 }

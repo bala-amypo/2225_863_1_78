@@ -1,11 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.VolunteerSkillRecord;
-import java.util.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-public interface VolunteerSkillRecordRepository {
-    List<VolunteerSkillRecord> findByVolunteerId(Long id);
-    List<VolunteerSkillRecord> findBySkillName(String name);
-    List<VolunteerSkillRecord> findBySkillNameAndSkillLevel(String n,String l);
-    VolunteerSkillRecord save(VolunteerSkillRecord s);
+@Repository
+public interface VolunteerSkillRecordRepository extends JpaRepository<VolunteerSkillRecord, Long> {
+    List<VolunteerSkillRecord> findByVolunteerId(Long volunteerId);
+    List<VolunteerSkillRecord> findBySkillNameAndSkillLevel(String skillName, String skillLevel);
+    List<VolunteerSkillRecord> findBySkillName(String skillName);
 }
