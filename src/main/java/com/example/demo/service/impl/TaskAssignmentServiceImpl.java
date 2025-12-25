@@ -1,67 +1,86 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.TaskAssignmentRecord;
+import com.example.demo.model.TaskRecord;
+import com.example.demo.model.VolunteerProfile;
+import com.example.demo.model.VolunteerSkillRecord;
+import com.example.demo.repository.TaskAssignmentRecordRepository;
+import com.example.demo.repository.TaskRecordRepository;
+import com.example.demo.repository.VolunteerProfileRepository;
+import com.example.demo.repository.VolunteerSkillRecordRepository;
+import com.example.demo.service.TaskAssignmentService;
 import com.example.demo.util.SkillLevelUtil;
-import java.util.*;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-public class TaskAssignmentServiceImpl {
-
-    private final TaskAssignmentRecordRepository assignRepo;
-    private final TaskRecordRepository taskRepo;
-    private final VolunteerProfileRepository profileRepo;
-    private final VolunteerSkillRecordRepository skillRepo;
-
-    public TaskAssignmentServiceImpl(
-            TaskAssignmentRecordRepository a,
-            TaskRecordRepository t,
-            VolunteerProfileRepository p,
-            VolunteerSkillRecordRepository s) {
-        this.assignRepo = a;
-        this.taskRepo = t;
-        this.profileRepo = p;
-        this.skillRepo = s;
+@Service
+public class TaskAssignmentServiceImpl implements TaskAssignmentService {
+    
+    private final TaskAssignmentRecordRepository assignmentRepository;
+    private final TaskRecordRepository taskRepository;
+    private final VolunteerProfileRepository volunteerRepository;
+    private final VolunteerSkillRecordRepository skillRepository;
+    
+    public TaskAssignmentServiceImpl(TaskAssignmentRecordRepository assignmentRepository,
+                                   TaskRecordRepository taskRepository,
+                                   VolunteerProfileRepository volunteerRepository,
+                                   VolunteerSkillRecordRepository skillRepository) {
+        this.assignmentRepository = assignmentRepository;
+        this.taskRepository = taskRepository;
+        this.volunteerRepository = volunteerRepository;
+        this.skillRepository = skillRepository;
     }
-
+    
+    @Override
     public TaskAssignmentRecord assignTask(Long taskId) {
-        TaskRecord task = taskRepo.findById(taskId).orElseThrow();
-
-        if (assignRepo.existsByTaskIdAndStatus(taskId, "ACTIVE"))
-            throw new BadRequestException("ACTIVE assignment");
-
-        List<VolunteerProfile> vols =
-                profileRepo.findByAvailabilityStatus("AVAILABLE");
-
-        if (vols.isEmpty())
-            throw new BadRequestException("No AVAILABLE volunteers");
-
-        for (VolunteerProfile v : vols) {
-            for (VolunteerSkillRecord s : skillRepo.findByVolunteerId(v.getId())) {
-                if (s.getSkillName().equals(task.getRequiredSkill()) &&
-                        SkillLevelUtil.levelRank(s.getSkillLevel()) >=
-                                SkillLevelUtil.levelRank(task.getRequiredSkillLevel())) {
-
-                    TaskAssignmentRecord r = new TaskAssignmentRecord();
-                    r.setTaskId(taskId);
-                    r.setVolunteerId(v.getId());
-                    taskRepo.save(task);
-                    return assignRepo.save(r);
+        if (assignmentRepository.existsByTaskIdAndStatus(taskId, "ACTIVE")) {
+            throw new BadRequestException("Task already has an ACTIVE assignment");
+        }
+        
+        TaskRecord task = taskRepository.findById(taskId)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        
+        List<VolunteerProfile> availableVolunteers = volunteerRepository.findByAvailabilityStatus("AVAILABLE");
+        
+        if (availableVolunteers.isEmpty()) {
+            throw new BadRequestException("No AVAILABLE volunteers found");
+        }
+        
+        for (VolunteerProfile volunteer : availableVolunteers) {
+            List<VolunteerSkillRecord> skills = skillRepository.findByVolunteerId(volunteer.getId());
+            
+            for (VolunteerSkillRecord skill : skills) {
+                if (skill.getSkillName().equals(task.getRequiredSkill()) &&
+                    SkillLevelUtil.isSkillLevelSufficient(skill.getSkillLevel(), task.getRequiredSkillLevel())) {
+                    
+                    TaskAssignmentRecord assignment = new TaskAssignmentRecord(taskId, volunteer.getId(), "ACTIVE");
+                    assignment = assignmentRepository.save(assignment);
+                    
+                    task.setStatus("ACTIVE");
+                    taskRepository.save(task);
+                    
+                    return assignment;
                 }
             }
         }
-        throw new BadRequestException("required skill level");
+        
+        throw new BadRequestException("No volunteer with sufficient required skill level found");
     }
-
-    public List<TaskAssignmentRecord> getAssignmentsByTask(Long id) {
-        return assignRepo.findByTaskId(id);
+    
+    @Override
+    public List<TaskAssignmentRecord> getAssignmentsByTask(Long taskId) {
+        return assignmentRepository.findByTaskId(taskId);
     }
-
-    public List<TaskAssignmentRecord> getAssignmentsByVolunteer(Long id) {
-        return assignRepo.findByVolunteerId(id);
+    
+    @Override
+    public List<TaskAssignmentRecord> getAssignmentsByVolunteer(Long volunteerId) {
+        return assignmentRepository.findByVolunteerId(volunteerId);
     }
-
+    
+    @Override
     public List<TaskAssignmentRecord> getAllAssignments() {
-        return assignRepo.findAll();
+        return assignmentRepository.findAll();
     }
 }

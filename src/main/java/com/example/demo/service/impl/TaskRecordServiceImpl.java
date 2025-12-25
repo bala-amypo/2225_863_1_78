@@ -1,41 +1,57 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.TaskRecord;
 import com.example.demo.repository.TaskRecordRepository;
-import java.util.*;
+import com.example.demo.service.TaskRecordService;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
-public class TaskRecordServiceImpl {
-
-    private final TaskRecordRepository repo;
-
-    public TaskRecordServiceImpl(TaskRecordRepository repo) {
-        this.repo = repo;
+@Service
+public class TaskRecordServiceImpl implements TaskRecordService {
+    
+    private final TaskRecordRepository repository;
+    
+    public TaskRecordServiceImpl(TaskRecordRepository repository) {
+        this.repository = repository;
     }
-
-    public TaskRecord createTask(TaskRecord t) {
-        if (t.getStatus() == null) t.setStatus("OPEN");
-        return repo.save(t);
+    
+    @Override
+    public TaskRecord createTask(TaskRecord task) {
+        task.setStatus("OPEN");
+        return repository.save(task);
     }
-
-    public TaskRecord updateTask(Long id, TaskRecord u) {
-        TaskRecord e = repo.findById(id).orElseThrow();
-        e.setTaskName(u.getTaskName());
-        e.setRequiredSkill(u.getRequiredSkill());
-        e.setRequiredSkillLevel(u.getRequiredSkillLevel());
-        e.setPriority(u.getPriority());
-        e.setStatus(u.getStatus());
-        return repo.save(e);
+    
+    @Override
+    public TaskRecord getTaskById(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
     }
-
+    
+    @Override
+    public TaskRecord updateTask(Long id, TaskRecord updatedTask) {
+        TaskRecord existing = getTaskById(id);
+        existing.setTaskName(updatedTask.getTaskName());
+        existing.setRequiredSkill(updatedTask.getRequiredSkill());
+        existing.setRequiredSkillLevel(updatedTask.getRequiredSkillLevel());
+        existing.setPriority(updatedTask.getPriority());
+        existing.setStatus(updatedTask.getStatus());
+        return repository.save(existing);
+    }
+    
+    @Override
     public List<TaskRecord> getOpenTasks() {
-        return repo.findByStatus("OPEN");
+        return repository.findByStatus("OPEN");
     }
-
-    public Optional<TaskRecord> getTaskByCode(String code) {
-        return repo.findByTaskCode(code);
+    
+    @Override
+    public Optional<TaskRecord> getTaskByCode(String taskCode) {
+        return repository.findByTaskCode(taskCode);
     }
-
+    
+    @Override
     public List<TaskRecord> getAllTasks() {
-        return repo.findAll();
+        return repository.findAll();
     }
 }
