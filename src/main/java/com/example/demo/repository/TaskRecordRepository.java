@@ -1,12 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.TaskRecord;
-import java.util.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-public interface TaskRecordRepository {
-    Optional<TaskRecord> findById(Long id);
-    Optional<TaskRecord> findByTaskCode(String code);
+@Repository
+public interface TaskRecordRepository extends JpaRepository<TaskRecord, Long> {
     List<TaskRecord> findByStatus(String status);
-    List<TaskRecord> findAll();
-    TaskRecord save(TaskRecord t);
+    Optional<TaskRecord> findByTaskCode(String taskCode);
 }
