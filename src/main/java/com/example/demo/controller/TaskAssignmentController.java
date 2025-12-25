@@ -1,28 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AssignmentStatusUpdateRequest;
 import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.service.TaskAssignmentService;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@RestController
+@RequestMapping("/assignments")
 public class TaskAssignmentController {
-
-    private final TaskAssignmentService service;
-
-    public TaskAssignmentController(TaskAssignmentService service) {
-        this.service = service;
+    
+    private final TaskAssignmentService assignmentService;
+    
+    public TaskAssignmentController(TaskAssignmentService assignmentService) {
+        this.assignmentService = assignmentService;
     }
-
-    public TaskAssignmentRecord assign(Long taskId) {
-        return service.assignTask(taskId);
+    
+    @GetMapping("/task/{taskId}")
+    public ResponseEntity<List<TaskAssignmentRecord>> getAssignmentsByTask(@PathVariable Long taskId) {
+        List<TaskAssignmentRecord> assignments = assignmentService.getAssignmentsByTask(taskId);
+        return ResponseEntity.ok(assignments);
     }
-
-    public List<TaskAssignmentRecord> getAll() {
-        return service.getAllAssignments();
-    }
-
-    public void updateStatus(AssignmentStatusUpdateRequest request) {
-        // baseline method – logic optional
+    
+    @GetMapping("/volunteer/{volunteerId}")
+    public ResponseEntity<List<TaskAssignmentRecord>> getAssignmentsByVolunteer(@PathVariable Long volunteerId) {
+        List<TaskAssignmentRecord> assignments = assignmentService.getAssignmentsByVolunteer(volunteerId);
+        return ResponseEntity.ok(assignments);
     }
 }
