@@ -1,15 +1,11 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.List;
-
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.VolunteerProfile;
 import com.example.demo.repository.VolunteerProfileRepository;
-import com.example.demo.service.VolunteerProfileService;
-import com.example.demo.exception.BadRequestException;
+import java.util.*;
 
-@Service
-public class VolunteerProfileServiceImpl implements VolunteerProfileService {
+public class VolunteerProfileServiceImpl {
 
     private final VolunteerProfileRepository repo;
 
@@ -17,37 +13,25 @@ public class VolunteerProfileServiceImpl implements VolunteerProfileService {
         this.repo = repo;
     }
 
-    
-    @Override
-    public VolunteerProfile create(VolunteerProfile profile) {
-
-        if (repo.existsByEmail(profile.getEmail())) {
+    public VolunteerProfile createVolunteer(VolunteerProfile p) {
+        if (repo.existsByVolunteerId(p.getVolunteerId()))
+            throw new BadRequestException("VolunteerId already exists");
+        if (repo.existsByEmail(p.getEmail()))
             throw new BadRequestException("Email already exists");
-        }
-
-        return repo.save(profile);
+        if (repo.existsByPhone(p.getPhone()))
+            throw new BadRequestException("Phone already exists");
+        return repo.save(p);
     }
 
-    
-    @Override
-    public VolunteerProfile updateAvailability(Long id, String status) {
-
-        VolunteerProfile existing = repo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Volunteer not found"));
-
-        existing.setAvailabilityStatus(status);
-
-        return repo.save(existing); 
+    public VolunteerProfile getVolunteerById(Long id) {
+        return repo.findById(id).orElseThrow();
     }
 
-    @Override
-    public VolunteerProfile get(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Volunteer not found"));
-    }
-
-    @Override
-    public List<VolunteerProfile> getAll() {
+    public List<VolunteerProfile> getAllVolunteers() {
         return repo.findAll();
+    }
+
+    public Optional<VolunteerProfile> findByVolunteerId(String id) {
+        return repo.findByVolunteerId(id);
     }
 }

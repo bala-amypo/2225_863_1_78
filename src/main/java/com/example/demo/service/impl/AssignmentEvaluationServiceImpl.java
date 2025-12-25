@@ -1,36 +1,27 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 import com.example.demo.model.AssignmentEvaluationRecord;
-import com.example.demo.repository.AssignmentEvaluationRecordRepository;
-import com.example.demo.service.AssignmentEvaluationService;
+import com.example.demo.repository.*;
+import java.util.*;
 
-@Service
-public class AssignmentEvaluationServiceImpl
-        implements AssignmentEvaluationService {
+public class AssignmentEvaluationServiceImpl {
 
-    private final AssignmentEvaluationRecordRepository repo;
+    private final AssignmentEvaluationRecordRepository evalRepo;
+    private final TaskAssignmentRecordRepository assignRepo;
 
     public AssignmentEvaluationServiceImpl(
-            AssignmentEvaluationRecordRepository repo) {
-        this.repo = repo;
+            AssignmentEvaluationRecordRepository e,
+            TaskAssignmentRecordRepository a) {
+        this.evalRepo = e;
+        this.assignRepo = a;
     }
 
-    @Override
-    public AssignmentEvaluationRecord submit(
-            AssignmentEvaluationRecord evaluation) {
-        return repo.save(evaluation);
+    public AssignmentEvaluationRecord evaluateAssignment(AssignmentEvaluationRecord e) {
+        assignRepo.findById(e.getAssignmentId()).orElseThrow();
+        return evalRepo.save(e);
     }
 
-    @Override
-    public List<AssignmentEvaluationRecord> getByAssignment(Long assignmentId) {
-        return repo.findByAssignmentId(assignmentId);
-    }
-
-    @Override
-    public List<AssignmentEvaluationRecord> getAll() {
-        return repo.findAll();
+    public List<AssignmentEvaluationRecord> getEvaluationsByAssignment(Long id) {
+        return evalRepo.findByAssignmentId(id);
     }
 }

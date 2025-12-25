@@ -1,16 +1,10 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.TaskRecord;
 import com.example.demo.repository.TaskRecordRepository;
-import com.example.demo.service.TaskRecordService;
+import java.util.*;
 
-@Service
-public class TaskRecordServiceImpl implements TaskRecordService {
+public class TaskRecordServiceImpl {
 
     private final TaskRecordRepository repo;
 
@@ -18,40 +12,30 @@ public class TaskRecordServiceImpl implements TaskRecordService {
         this.repo = repo;
     }
 
-    @Override
-    public TaskRecord create(TaskRecord task) {
-        return repo.save(task);
+    public TaskRecord createTask(TaskRecord t) {
+        if (t.getStatus() == null) t.setStatus("OPEN");
+        return repo.save(t);
     }
 
-    @Override
-    public TaskRecord get(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Task not found"));
+    public TaskRecord updateTask(Long id, TaskRecord u) {
+        TaskRecord e = repo.findById(id).orElseThrow();
+        e.setTaskName(u.getTaskName());
+        e.setRequiredSkill(u.getRequiredSkill());
+        e.setRequiredSkillLevel(u.getRequiredSkillLevel());
+        e.setPriority(u.getPriority());
+        e.setStatus(u.getStatus());
+        return repo.save(e);
     }
 
-    @Override
-    public List<TaskRecord> getAll() {
-        return repo.findAll();
-    }
-
-    @Override
     public List<TaskRecord> getOpenTasks() {
         return repo.findByStatus("OPEN");
     }
 
-    
-    @Override
-    public TaskRecord update(Long id, TaskRecord updatedTask) {
+    public Optional<TaskRecord> getTaskByCode(String code) {
+        return repo.findByTaskCode(code);
+    }
 
-        TaskRecord existing = repo.findById(id)
-                .orElseThrow(() -> new BadRequestException("Task not found"));
-
-        existing.setTaskCode(updatedTask.getTaskCode());
-        existing.setTaskName(updatedTask.getTaskName());
-        existing.setRequiredSkill(updatedTask.getRequiredSkill());
-        existing.setRequiredSkillLevel(updatedTask.getRequiredSkillLevel());
-        existing.setStatus(updatedTask.getStatus());
-
-        return repo.save(existing);
+    public List<TaskRecord> getAllTasks() {
+        return repo.findAll();
     }
 }
