@@ -1,13 +1,9 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
+import com.example.demo.dto.AvailabilityUpdateRequest;
 import com.example.demo.model.VolunteerProfile;
 import com.example.demo.service.VolunteerProfileService;
 
-@RestController
-@RequestMapping("/api/volunteers")
 public class VolunteerProfileController {
 
     private final VolunteerProfileService service;
@@ -16,41 +12,13 @@ public class VolunteerProfileController {
         this.service = service;
     }
 
-    
-    @PostMapping
-    public VolunteerProfile create(@RequestBody VolunteerProfile profile) {
-        return service.create(profile);
+    public VolunteerProfile getVolunteer(Long id) {
+        return service.getVolunteerById(id);
     }
 
-    
-    @GetMapping("/{id}")
-    public VolunteerProfile getById(@PathVariable Long id) {
-        return service.get(id);
-    }
-
-    
-    @GetMapping
-    public List<VolunteerProfile> getAll() {
-        return service.getAll();
-    }
-
-    
-    @PutMapping("/{id}/availability")
-    public VolunteerProfile updateAvailability(
-            @PathVariable Long id,
-            @RequestParam String status) {
-
-        return service.updateAvailability(id, status);
-    }
-
-    
-    @GetMapping("/lookup/{volunteerId}")
-    public VolunteerProfile lookup(@PathVariable String volunteerId) {
-
-        return service.getAll()
-                .stream()
-                .filter(v -> volunteerId.equals(v.getVolunteerId()))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Volunteer not found"));
+    public void updateAvailability(AvailabilityUpdateRequest request) {
+        VolunteerProfile profile =
+                service.getVolunteerById(request.getVolunteerId());
+        profile.setAvailabilityStatus(request.getAvailabilityStatus());
     }
 }

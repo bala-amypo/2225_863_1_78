@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
+import com.example.demo.dto.AssignmentStatusUpdateRequest;
 import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.service.TaskAssignmentService;
 
-@RestController
-@RequestMapping("/api/assignments")
+import java.util.List;
+
 public class TaskAssignmentController {
 
     private final TaskAssignmentService service;
@@ -16,38 +14,15 @@ public class TaskAssignmentController {
         this.service = service;
     }
 
-    
-    @PostMapping("/assign/{taskId}")
-    public TaskAssignmentRecord assign(@PathVariable Long taskId) {
-        return service.assign(taskId);
+    public TaskAssignmentRecord assign(Long taskId) {
+        return service.assignTask(taskId);
     }
 
-   
-    @PutMapping("/{id}/status")
-    public TaskAssignmentRecord updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status) {
-
-        return service.updateStatus(id, status);
-    }
-
-    
-    @GetMapping("/volunteer/{volunteerId}")
-    public List<TaskAssignmentRecord> byVolunteer(
-            @PathVariable Long volunteerId) {
-        return service.getByVolunteer(volunteerId);
-    }
-
-    
-    @GetMapping("/task/{taskId}")
-    public List<TaskAssignmentRecord> byTask(
-            @PathVariable Long taskId) {
-        return service.getByTask(taskId);
-    }
-
-   
-    @GetMapping
     public List<TaskAssignmentRecord> getAll() {
-        return service.getAll();
+        return service.getAllAssignments();
+    }
+
+    public void updateStatus(AssignmentStatusUpdateRequest request) {
+        // baseline method – logic optional
     }
 }

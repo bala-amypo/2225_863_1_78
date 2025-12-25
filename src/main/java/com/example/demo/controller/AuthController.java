@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
-import com.example.demo.model.User;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.security.CustomUserDetailsService;
+import com.example.demo.security.JwtTokenProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -13,27 +12,31 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     public AuthController(CustomUserDetailsService uds,
-                          JwtTokenProvider jwt) {
+                          JwtTokenProvider jwtTokenProvider) {
         this.userDetailsService = uds;
-        this.jwtTokenProvider = jwt;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public AuthResponse register(RegisterRequest req) {
+    public AuthResponse register(RegisterRequest request) {
+
         var user = userDetailsService.registerUser(
-                req.getName(),
-                req.getEmail(),
-                req.getPassword(),
-                req.getRole()
+                request.getName(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getRole()
         );
 
         Authentication auth =
                 new UsernamePasswordAuthenticationToken(
-                        req.getEmail(), req.getPassword());
+                        request.getEmail(),
+                        request.getPassword()
+                );
 
         String token = jwtTokenProvider.generateToken(
                 auth,
                 (Long) user.get("userId"),
-                (String) user.get("role"));
+                (String) user.get("role")
+        );
 
         return new AuthResponse(token);
     }

@@ -1,14 +1,10 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.model.TaskRecord;
 import com.example.demo.service.TaskRecordService;
 
-@RestController
-@RequestMapping("/api/tasks")
+import java.util.List;
+
 public class TaskRecordController {
 
     private final TaskRecordService service;
@@ -17,36 +13,11 @@ public class TaskRecordController {
         this.service = service;
     }
 
-   
-    @PostMapping
-    public TaskRecord create(@RequestBody TaskRecord task) {
-        return service.create(task);
+    public TaskRecord create(TaskRecord task) {
+        return service.createTask(task);
     }
 
-    
-    @GetMapping("/{id}")
-    public TaskRecord get(@PathVariable Long id) {
-        return service.get(id);
-    }
-
-   
-    @GetMapping
-    public List<TaskRecord> getAll() {
-        return service.getAll();
-    }
-
-   
-    @GetMapping("/open")
-    public List<TaskRecord> getOpen() {
+    public List<TaskRecord> getOpenTasks() {
         return service.getOpenTasks();
-    }
-
-    
-    @PutMapping("/{id}")
-    public TaskRecord update(
-            @PathVariable Long id,
-            @RequestBody TaskRecord updatedTask) {
-
-        return service.update(id, updatedTask);
     }
 }

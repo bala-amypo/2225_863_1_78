@@ -1,38 +1,22 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
+import com.example.demo.dto.EvaluationRequest;
 import com.example.demo.model.AssignmentEvaluationRecord;
-import com.example.demo.repository.AssignmentEvaluationRecordRepository;
+import com.example.demo.service.AssignmentEvaluationService;
 
-@RestController
-@RequestMapping("/api/evaluations")
 public class AssignmentEvaluationController {
 
-    private final AssignmentEvaluationRecordRepository repo;
+    private final AssignmentEvaluationService service;
 
-    public AssignmentEvaluationController(AssignmentEvaluationRecordRepository repo) {
-        this.repo = repo;
+    public AssignmentEvaluationController(AssignmentEvaluationService service) {
+        this.service = service;
     }
 
-    
-    @PostMapping
-    public AssignmentEvaluationRecord submit(
-            @RequestBody AssignmentEvaluationRecord eval) {
-        return repo.save(eval);
-    }
-
-   
-    @GetMapping("/assignment/{assignmentId}")
-    public List<AssignmentEvaluationRecord> byAssignment(
-            @PathVariable Long assignmentId) {
-        return repo.findByAssignmentId(assignmentId);
-    }
-
-   
-    @GetMapping
-    public List<AssignmentEvaluationRecord> getAll() {
-        return repo.findAll();
+    public AssignmentEvaluationRecord evaluate(EvaluationRequest request) {
+        AssignmentEvaluationRecord record = new AssignmentEvaluationRecord();
+        record.setAssignmentId(request.getAssignmentId());
+        record.setRating(request.getRating());
+        record.setFeedback(request.getFeedback());
+        return service.evaluateAssignment(record);
     }
 }

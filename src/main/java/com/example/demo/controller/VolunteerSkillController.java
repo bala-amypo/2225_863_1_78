@@ -1,42 +1,17 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
 import com.example.demo.model.VolunteerSkillRecord;
-import com.example.demo.repository.VolunteerSkillRecordRepository;
+import com.example.demo.service.VolunteerSkillService;
 
-@RestController
-@RequestMapping("/api/skills")
 public class VolunteerSkillController {
 
-    private final VolunteerSkillRecordRepository repo;
+    private final VolunteerSkillService service;
 
-    public VolunteerSkillController(VolunteerSkillRecordRepository repo) {
-        this.repo = repo;
+    public VolunteerSkillController(VolunteerSkillService service) {
+        this.service = service;
     }
 
-   
-    @PostMapping
-    public VolunteerSkillRecord addOrUpdate(@RequestBody VolunteerSkillRecord skill) {
-        return repo.save(skill);
-    }
-
-    
-    @GetMapping("/volunteer/{volunteerId}")
-    public List<VolunteerSkillRecord> getByVolunteer(@PathVariable Long volunteerId) {
-        return repo.findByVolunteerId(volunteerId);
-    }
-
-    
-    @GetMapping("/{id}")
-    public VolunteerSkillRecord getSkill(@PathVariable Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-   
-    @GetMapping
-    public List<VolunteerSkillRecord> getAll() {
-        return repo.findAll();
+    public VolunteerSkillRecord addSkill(VolunteerSkillRecord record) {
+        return service.addOrUpdateSkill(record);
     }
 }
