@@ -2,29 +2,58 @@ package com.example.demo.controller;
 
 import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.service.TaskAssignmentService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/assignments")
+@RequestMapping("/api/assignments")
 public class TaskAssignmentController {
-    
-    private final TaskAssignmentService assignmentService;
-    
-    public TaskAssignmentController(TaskAssignmentService assignmentService) {
-        this.assignmentService = assignmentService;
+
+    private final TaskAssignmentService service;
+
+    public TaskAssignmentController(TaskAssignmentService service) {
+        this.service = service;
     }
-    
-    @GetMapping("/task/{taskId}")
-    public ResponseEntity<List<TaskAssignmentRecord>> getAssignmentsByTask(@PathVariable Long taskId) {
-        List<TaskAssignmentRecord> assignments = assignmentService.getAssignmentsByTask(taskId);
-        return ResponseEntity.ok(assignments);
+
+    // POST /api/assignments/assign/{taskId}
+    @PostMapping("/assign/{taskId}")
+    public TaskAssignmentRecord assign(@PathVariable Long taskId) {
+        return service.assignTask(taskId);
     }
-    
+
+    // PUT /api/assignments/{id}/status
+    @PutMapping("/{id}/status")
+    public TaskAssignmentRecord updateStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+
+        TaskAssignmentRecord record =
+                service.getAllAssignments()
+                        .stream()
+                        .filter(a -> a.getId().equals(id))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Assignment not found"));
+
+        record.setStatus(status);
+        return record;
+    }
+
+    // GET /api/assignments/volunteer/{volunteerId}
     @GetMapping("/volunteer/{volunteerId}")
-    public ResponseEntity<List<TaskAssignmentRecord>> getAssignmentsByVolunteer(@PathVariable Long volunteerId) {
-        List<TaskAssignmentRecord> assignments = assignmentService.getAssignmentsByVolunteer(volunteerId);
-        return ResponseEntity.ok(assignments);
+    public List<TaskAssignmentRecord> getByVolunteer(@PathVariable Long volunteerId) {
+        return service.getAssignmentsByVolunteer(volunteerId);
+    }
+
+    // GET /api/assignments/task/{taskId}
+    @GetMapping("/task/{taskId}")
+    public List<TaskAssignmentRecord> getByTask(@PathVariable Long taskId) {
+        return service.getAssignmentsByTask(taskId);
+    }
+
+    // GET /api/assignments
+    @GetMapping
+    public List<TaskAssignmentRecord> getAll() {
+        return service.getAllAssignments();
     }
 }

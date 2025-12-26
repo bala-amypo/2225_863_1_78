@@ -3,27 +3,36 @@ package com.example.demo.controller;
 import com.example.demo.dto.EvaluationRequest;
 import com.example.demo.model.AssignmentEvaluationRecord;
 import com.example.demo.service.AssignmentEvaluationService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/evaluations")
+@RequestMapping("/api/evaluations")
 public class AssignmentEvaluationController {
-    
-    private final AssignmentEvaluationService evaluationService;
-    
-    public AssignmentEvaluationController(AssignmentEvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
+
+    private final AssignmentEvaluationService service;
+
+    public AssignmentEvaluationController(AssignmentEvaluationService service) {
+        this.service = service;
     }
-    
+
+    // POST /api/evaluations
     @PostMapping
-    public ResponseEntity<AssignmentEvaluationRecord> evaluateAssignment(@RequestBody EvaluationRequest request) {
-        AssignmentEvaluationRecord evaluation = new AssignmentEvaluationRecord(
-            request.getAssignmentId(), 
-            request.getRating(), 
-            request.getComments()
-        );
-        AssignmentEvaluationRecord result = evaluationService.evaluateAssignment(evaluation);
-        return ResponseEntity.ok(result);
+    public AssignmentEvaluationRecord submit(@RequestBody AssignmentEvaluationRecord record) {
+        return service.evaluateAssignment(record);
+    }
+
+    // GET /api/evaluations/assignment/{assignmentId}
+    @GetMapping("/assignment/{assignmentId}")
+    public List<AssignmentEvaluationRecord> getByAssignment(
+            @PathVariable Long assignmentId) {
+        return service.getEvaluationsByAssignment(assignmentId);
+    }
+
+    // GET /api/evaluations
+    @GetMapping
+    public List<AssignmentEvaluationRecord> getAll() {
+        return service.getEvaluationsByAssignment(null);
     }
 }
