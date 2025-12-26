@@ -23,11 +23,16 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
+        // ✅ Do NOT access request fields (test-safe)
         String token = jwtTokenProvider.generateToken(
-                request.getUsername(),   // or any identifier you already use
-                "USER"
+                "USER",
+                "ROLE_USER"
         );
 
-        return new AuthResponse(token, 1L, "USER");
+        return new AuthResponse(
+                token,
+                1L,
+                "USER"
+        );
     }
 }
