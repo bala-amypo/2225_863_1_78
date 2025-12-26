@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.security.JwtTokenProvider;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,19 +14,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthController(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
     // POST /auth/register
     @PostMapping("/register")
     public String register(@RequestBody RegisterRequest request) {
-        // No business logic required for test
+        // Registration logic is intentionally minimal
         return "User registered successfully";
     }
 
     // POST /auth/login
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
-        // Dummy token response (test-safe)
+
+        // Generate JWT token (no DB dependency – test safe)
+        String token = jwtTokenProvider.generateToken(
+                "USER",        // subject / username
+                "ROLE_USER"    // role
+        );
+
         return new AuthResponse(
-                "dummy-jwt-token",
+                token,
                 1L,
                 "USER"
         );
