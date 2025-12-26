@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.TaskAssignmentRecord;
 import com.example.demo.service.TaskAssignmentService;
+import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,32 +23,37 @@ public class TaskAssignmentController {
         return service.assignTask(taskId);
     }
 
-    // PUT /api/assignments/{id}/status
+    // ✅ CONTROLLER-ONLY FIX (NO service change)
     @PutMapping("/{id}/status")
+    @Transactional
     public TaskAssignmentRecord updateStatus(
             @PathVariable Long id,
             @RequestParam String status) {
 
-        TaskAssignmentRecord record =
-                service.getAllAssignments()
-                        .stream()
-                        .filter(a -> a.getId().equals(id))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Assignment not found"));
+        TaskAssignmentRecord record = service.getAllAssignments()
+                .stream()
+                .filter(a -> a.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Assignment not found"));
 
+        // JPA dirty checking will persist this
         record.setStatus(status);
+
         return record;
     }
 
     // GET /api/assignments/volunteer/{volunteerId}
     @GetMapping("/volunteer/{volunteerId}")
-    public List<TaskAssignmentRecord> getByVolunteer(@PathVariable Long volunteerId) {
+    public List<TaskAssignmentRecord> getByVolunteer(
+            @PathVariable Long volunteerId) {
         return service.getAssignmentsByVolunteer(volunteerId);
     }
 
     // GET /api/assignments/task/{taskId}
     @GetMapping("/task/{taskId}")
-    public List<TaskAssignmentRecord> getByTask(@PathVariable Long taskId) {
+    public List<TaskAssignmentRecord> getByTask(
+            @PathVariable Long taskId) {
         return service.getAssignmentsByTask(taskId);
     }
 
