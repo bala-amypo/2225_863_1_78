@@ -18,19 +18,20 @@ public class VolunteerSkillController {
 
     // POST /api/skills
     @PostMapping
-    public VolunteerSkillRecord addOrUpdate(@RequestBody VolunteerSkillRecord skill) {
-        return service.addOrUpdateSkill(skill);
-    }
-
-    // GET /api/skills/volunteer/{volunteerId}
-    @GetMapping("/volunteer/{volunteerId}")
-    public List<VolunteerSkillRecord> getByVolunteer(@PathVariable Long volunteerId) {
-        return service.getSkillsByVolunteer(volunteerId);
+    public VolunteerSkillRecord addSkill(@RequestBody VolunteerSkillRecord record) {
+        return service.addOrUpdateSkill(record);
     }
 
     // GET /api/skills
     @GetMapping
-    public List<VolunteerSkillRecord> getAll() {
-        return service.getSkillsByVolunteer(null);
+    public List<VolunteerSkillRecord> getAllSkills() {
+        return service.getAllSkills();
+    }
+
+    // GET /api/skills/volunteer/{volunteerId}
+    @GetMapping("/volunteer/{volunteerId}")
+    public List<VolunteerSkillRecord> getByVolunteer(
+            @PathVariable Long volunteerId) {
+        return service.getSkillsByVolunteer(volunteerId);
     }
 }

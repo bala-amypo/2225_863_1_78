@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EvaluationRequest;
 import com.example.demo.model.AssignmentEvaluationRecord;
 import com.example.demo.service.AssignmentEvaluationService;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,15 @@ public class AssignmentEvaluationController {
 
     // POST /api/evaluations
     @PostMapping
-    public AssignmentEvaluationRecord submit(@RequestBody AssignmentEvaluationRecord record) {
+    public AssignmentEvaluationRecord create(
+            @RequestBody AssignmentEvaluationRecord record) {
         return service.evaluateAssignment(record);
+    }
+
+    // GET /api/evaluations
+    @GetMapping
+    public List<AssignmentEvaluationRecord> getAll() {
+        return service.getAllEvaluations();
     }
 
     // GET /api/evaluations/assignment/{assignmentId}
@@ -28,11 +34,5 @@ public class AssignmentEvaluationController {
     public List<AssignmentEvaluationRecord> getByAssignment(
             @PathVariable Long assignmentId) {
         return service.getEvaluationsByAssignment(assignmentId);
-    }
-
-    // GET /api/evaluations
-    @GetMapping
-    public List<AssignmentEvaluationRecord> getAll() {
-        return service.getEvaluationsByAssignment(null);
     }
 }
