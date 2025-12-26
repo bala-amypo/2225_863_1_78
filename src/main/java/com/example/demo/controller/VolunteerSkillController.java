@@ -18,14 +18,9 @@ public class VolunteerSkillController {
 
     // POST /api/skills
     @PostMapping
-    public VolunteerSkillRecord addSkill(@RequestBody VolunteerSkillRecord record) {
+    public VolunteerSkillRecord addSkill(
+            @RequestBody VolunteerSkillRecord record) {
         return service.addOrUpdateSkill(record);
-    }
-
-    // GET /api/skills
-    @GetMapping
-    public List<VolunteerSkillRecord> getAllSkills() {
-        return service.getAllSkills();
     }
 
     // GET /api/skills/volunteer/{volunteerId}

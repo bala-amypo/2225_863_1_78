@@ -23,12 +23,6 @@ public class AssignmentEvaluationController {
         return service.evaluateAssignment(record);
     }
 
-    // GET /api/evaluations
-    @GetMapping
-    public List<AssignmentEvaluationRecord> getAll() {
-        return service.getAllEvaluations();
-    }
-
     // GET /api/evaluations/assignment/{assignmentId}
     @GetMapping("/assignment/{assignmentId}")
     public List<AssignmentEvaluationRecord> getByAssignment(
