@@ -61,7 +61,7 @@ public class SwaggerConfig {
                         .description("API documentation with JWT authentication")
                         .version("1.0"))
                 .servers(List.of(
-                        new Server().url("http://localhost:8080")
+                        new Server().url("https://9116.32procr.amypo.ai/")
                 ))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth", bearerAuth))
