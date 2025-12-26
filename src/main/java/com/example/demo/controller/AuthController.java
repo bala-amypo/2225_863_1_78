@@ -31,11 +31,10 @@ public class AuthController {
     public VolunteerProfile register(@RequestBody RegisterRequest request) {
 
         VolunteerProfile profile = new VolunteerProfile();
-        profile.setVolunteerId(request.getVolunteerId());
         profile.setName(request.getName());
         profile.setEmail(request.getEmail());
 
-        return volunteerService.save(profile);
+        return volunteerService.create(profile);
     }
 
     // POST /auth/login
@@ -43,10 +42,10 @@ public class AuthController {
     public AuthResponse login(@RequestBody AuthRequest request) {
 
         VolunteerProfile profile =
-                volunteerService.get(request.getVolunteerId());
+                volunteerService.get(request.getId());
 
         String token = jwtTokenProvider.generateToken(
-                profile.getVolunteerId(),
+                profile.getId().toString(),
                 "VOLUNTEER"
         );
 
