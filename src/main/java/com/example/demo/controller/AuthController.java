@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.security.JwtTokenProvider;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-    // POST /auth/register
-    @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
-        // No business logic required for test
-        return "User registered successfully";
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthController(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     // POST /auth/login
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
-        // Dummy token response (test-safe)
-        return new AuthResponse(
-                "dummy-jwt-token",
-                1L,
+
+        String token = jwtTokenProvider.generateToken(
+                request.getUsername(),   // or any identifier you already use
                 "USER"
         );
+
+        return new AuthResponse(token, 1L, "USER");
     }
 }
