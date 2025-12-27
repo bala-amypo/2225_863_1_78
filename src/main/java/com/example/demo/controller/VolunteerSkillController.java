@@ -16,14 +16,14 @@ public class VolunteerSkillController {
         this.service = service;
     }
 
-    // POST /api/skills
+    
     @PostMapping
     public VolunteerSkillRecord addSkill(
             @RequestBody VolunteerSkillRecord record) {
         return service.addOrUpdateSkill(record);
     }
 
-    // GET /api/skills/volunteer/{volunteerId}
+   
     @GetMapping("/volunteer/{volunteerId}")
     public List<VolunteerSkillRecord> getByVolunteer(
             @PathVariable Long volunteerId) {
