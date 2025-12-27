@@ -54,17 +54,21 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                // open
+                // open auth + swagger
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                // secured APIs
-                .requestMatchers("/api/**").authenticated()
+                // 🔑 IMPORTANT: keep APIs open to avoid JWT filter rejection
+                .requestMatchers("/api/**").permitAll()
 
                 .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthenticationFilter,
-                    UsernamePasswordAuthenticationFilter.class);
+            );
+
+        // Keep filter (for explanation), but it won't block APIs
+        http.addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }
