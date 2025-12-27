@@ -17,13 +17,13 @@ public class TaskAssignmentController {
         this.service = service;
     }
 
-    // POST /api/assignments/assign/{taskId}
+   
     @PostMapping("/assign/{taskId}")
     public TaskAssignmentRecord assign(@PathVariable Long taskId) {
         return service.assignTask(taskId);
     }
 
-    // ✅ CONTROLLER-ONLY FIX (NO service change)
+    
     @PutMapping("/{id}/status")
     @Transactional
     public TaskAssignmentRecord updateStatus(
