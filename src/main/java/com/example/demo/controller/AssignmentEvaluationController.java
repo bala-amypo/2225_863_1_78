@@ -16,14 +16,14 @@ public class AssignmentEvaluationController {
         this.service = service;
     }
 
-    // POST /api/evaluations
+    
     @PostMapping
     public AssignmentEvaluationRecord create(
             @RequestBody AssignmentEvaluationRecord record) {
         return service.evaluateAssignment(record);
     }
 
-    // GET /api/evaluations/assignment/{assignmentId}
+   
     @GetMapping("/assignment/{assignmentId}")
     public List<AssignmentEvaluationRecord> getByAssignment(
             @PathVariable Long assignmentId) {

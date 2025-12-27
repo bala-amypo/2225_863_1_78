@@ -37,27 +37,27 @@ public class TaskAssignmentController {
                 .orElseThrow(() ->
                         new RuntimeException("Assignment not found"));
 
-        // JPA dirty checking will persist this
+       
         record.setStatus(status);
 
         return record;
     }
 
-    // GET /api/assignments/volunteer/{volunteerId}
+   
     @GetMapping("/volunteer/{volunteerId}")
     public List<TaskAssignmentRecord> getByVolunteer(
             @PathVariable Long volunteerId) {
         return service.getAssignmentsByVolunteer(volunteerId);
     }
 
-    // GET /api/assignments/task/{taskId}
+    
     @GetMapping("/task/{taskId}")
     public List<TaskAssignmentRecord> getByTask(
             @PathVariable Long taskId) {
         return service.getAssignmentsByTask(taskId);
     }
 
-    // GET /api/assignments
+    
     @GetMapping
     public List<TaskAssignmentRecord> getAll() {
         return service.getAllAssignments();
