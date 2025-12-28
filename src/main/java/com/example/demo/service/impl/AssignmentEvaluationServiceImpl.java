@@ -45,4 +45,9 @@ public class AssignmentEvaluationServiceImpl implements AssignmentEvaluationServ
     public List<AssignmentEvaluationRecord> getEvaluationsByAssignment(Long assignmentId) {
         return evaluationRepository.findByAssignmentId(assignmentId);
     }
+
+     @Override
+    public List<AssignmentEvaluationRecord> getAll() {
+        return repo.findAll();
+    }
 }

@@ -16,17 +16,21 @@ public class AssignmentEvaluationController {
         this.service = service;
     }
 
-    
     @PostMapping
     public AssignmentEvaluationRecord create(
             @RequestBody AssignmentEvaluationRecord record) {
         return service.evaluateAssignment(record);
     }
 
-   
     @GetMapping("/assignment/{assignmentId}")
     public List<AssignmentEvaluationRecord> getByAssignment(
             @PathVariable Long assignmentId) {
         return service.getEvaluationsByAssignment(assignmentId);
+    }
+
+    // ✅ NEW: GET all evaluations
+    @GetMapping
+    public List<AssignmentEvaluationRecord> getAll() {
+        return service.getAll();
     }
 }
