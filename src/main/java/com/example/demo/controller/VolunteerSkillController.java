@@ -16,17 +16,21 @@ public class VolunteerSkillController {
         this.service = service;
     }
 
-    
     @PostMapping
     public VolunteerSkillRecord addSkill(
             @RequestBody VolunteerSkillRecord record) {
         return service.addOrUpdateSkill(record);
     }
 
-   
     @GetMapping("/volunteer/{volunteerId}")
     public List<VolunteerSkillRecord> getByVolunteer(
             @PathVariable Long volunteerId) {
         return service.getSkillsByVolunteer(volunteerId);
+    }
+
+    // ✅ NEW: GET all skills (NO other changes)
+    @GetMapping
+    public List<VolunteerSkillRecord> getAll() {
+        return service.getAllSkills();
     }
 }
