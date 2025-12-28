@@ -54,17 +54,23 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                // open auth + swagger
+
+                // ✅ auth + swagger always open
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                // 🔑 IMPORTANT: keep APIs open to avoid JWT filter rejection
+                // ✅ FIX: task assignment paths (both possible mappings)
+                .requestMatchers("/assignments/**").permitAll()
+                .requestMatchers("/api/assignments/**").permitAll()
+
+                // ✅ all other APIs
                 .requestMatchers("/api/**").permitAll()
 
+                // fallback
                 .anyRequest().authenticated()
             );
 
-        // Keep filter (for explanation), but it won't block APIs
+        // JWT filter kept (for explanation), but APIs are permitted
         http.addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
