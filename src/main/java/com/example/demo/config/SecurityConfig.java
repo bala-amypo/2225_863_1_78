@@ -55,26 +55,20 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ auth + swagger always open
+                // 🔓 Auth & Swagger are open
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                // ✅ FIX: task assignment paths (both possible mappings)
-                .requestMatchers("/assignments/**").permitAll()
-                .requestMatchers("/api/assignments/**").permitAll()
-
-                // ✅ all other APIs
-                .requestMatchers("/api/**").permitAll()
+                // 🔒 All APIs require authentication (ANY role allowed)
+                .requestMatchers("/api/**").authenticated()
 
                 // fallback
                 .anyRequest().authenticated()
-            );
-
-        // JWT filter kept (for explanation), but APIs are permitted
-        http.addFilterBefore(
+            )
+            .addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
-        );
+            );
 
         return http.build();
     }
