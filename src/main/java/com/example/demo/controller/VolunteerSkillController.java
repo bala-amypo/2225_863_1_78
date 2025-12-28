@@ -4,6 +4,8 @@ import com.example.demo.model.VolunteerSkillRecord;
 import com.example.demo.service.VolunteerSkillService;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.List;
 
 @RestController

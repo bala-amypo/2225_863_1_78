@@ -5,6 +5,8 @@ import com.example.demo.service.TaskAssignmentService;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.List;
 
 @RestController
