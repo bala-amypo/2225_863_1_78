@@ -48,6 +48,6 @@ public class AssignmentEvaluationServiceImpl implements AssignmentEvaluationServ
 
      @Override
     public List<AssignmentEvaluationRecord> getAll() {
-        return repo.findAll();
+        return evaluationRepository.findAll();
     }
 }
