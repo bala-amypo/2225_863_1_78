@@ -6,4 +6,5 @@ import java.util.List;
 public interface VolunteerSkillService {
     List<VolunteerSkillRecord> getSkillsByVolunteer(Long volunteerId);
     VolunteerSkillRecord addOrUpdateSkill(VolunteerSkillRecord skill);
+    List<VolunteerSkillRecord> getAll();
 }

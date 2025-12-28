@@ -30,4 +30,9 @@ public class VolunteerSkillServiceImpl implements VolunteerSkillService {
 
         return repository.save(skill);
     }
+
+    @Override
+    public List<VolunteerSkillRecord> getAll() {
+        return repository.findAll();
+    }
 }
