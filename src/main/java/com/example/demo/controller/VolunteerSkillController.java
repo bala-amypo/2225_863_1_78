@@ -28,9 +28,9 @@ public class VolunteerSkillController {
         return service.getSkillsByVolunteer(volunteerId);
     }
 
-    // ✅ NEW: GET all skills (NO other changes)
+    // ✅ GET all skills (uses EXISTING service method)
     @GetMapping
     public List<VolunteerSkillRecord> getAll() {
-        return service.getAllSkills();
+        return service.getAll();
     }
 }
