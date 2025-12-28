@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@SecurityRequirement(name = "bearerAuth")
+
 public class AuthController {
 
     private final JwtTokenProvider jwtTokenProvider;

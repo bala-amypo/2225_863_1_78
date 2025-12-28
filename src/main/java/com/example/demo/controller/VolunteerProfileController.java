@@ -10,6 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/volunteers")
+@SecurityRequirement(name = "bearerAuth")
+
 public class VolunteerProfileController {
 
     private final VolunteerProfileService service;

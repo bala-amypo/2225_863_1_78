@@ -8,6 +8,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/skills")
+@SecurityRequirement(name = "bearerAuth")
+
 public class VolunteerSkillController {
 
     private final VolunteerSkillService service;
